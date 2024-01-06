@@ -26,7 +26,8 @@ func GetSubmissionStatusUpdatesQueueMgr() *SubmissionStatusUpdatesQueueMgr {
 		submissionStatusUpdatesQueueMgrInstance = &SubmissionStatusUpdatesQueueMgr{
 			Queue: getRabbitMQSubmissionsStatusUpdatesQueue(),
 			UseCases: &application.SubmissionsStatusUpdaterUseCases{
-				SubmissionsRepository: implementations.GetSubmissionsPgRepository(),
+				SubmissionsRepository:           implementations.GetSubmissionsPgRepository(),
+				SubmissionsRealTimeUpdatesQueue: implementations.GetSubmissionsRealTimeUpdatesQueueMgrInstance(),
 			},
 			// Channel is set when listening for submission status updates
 		}
@@ -57,7 +58,10 @@ func getRabbitMQSubmissionsStatusUpdatesQueue() *amqp.Queue {
 	)
 
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Fatal(
+			"[RabbitMQ]: Error declaring submissions status updates queue: ",
+			err.Error(),
+		)
 	}
 
 	// Set fair dispatch
@@ -69,7 +73,10 @@ func getRabbitMQSubmissionsStatusUpdatesQueue() *amqp.Queue {
 	)
 
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Fatal(
+			"[RabbitMQ]: Error setting fair dispatch for submissions status updates queue: ",
+			err.Error(),
+		)
 	}
 
 	// Set queue
@@ -101,7 +108,10 @@ func (queueMgr *SubmissionStatusUpdatesQueueMgr) ListenForSubmissionStatusUpdate
 		qArgs,
 	)
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Fatal(
+			"[RabbitMQ Submissions Status Updates Queue]: Error consuming queue: ",
+			err.Error(),
+		)
 	}
 
 	// Set channel
@@ -113,7 +123,9 @@ func (queueMgr *SubmissionStatusUpdatesQueueMgr) ListenForSubmissionStatusUpdate
 
 // processSubmissionStatusUpdates creates an infinite loop that processes submission status updates
 func (queueMgr *SubmissionStatusUpdatesQueueMgr) processSubmissionStatusUpdates() {
-	log.Println("[RabbitMQ]: Listening for submission status updates")
+	log.Println(
+		"[RabbitMQ Submissions Status Updates Queue]: Listening for submission status updates...",
+	)
 
 	// Process each message in a separate goroutine
 	for msg := range queueMgr.Channel {
@@ -129,17 +141,22 @@ func (queueMgr *SubmissionStatusUpdatesQueueMgr) processSubmissionStatusUpdate(m
 	dto := &dtos.SubmissionStatusUpdateDTO{}
 	err := json.Unmarshal(msg.Body, dto)
 	if err != nil {
-		log.Println("[RabbitMQ]: Error unmarshalling message: " + err.Error())
+		log.Println(
+			"[RabbitMQ Submissions Status Updates Queue]: Error parsing submission status update: ",
+			err.Error(),
+		)
 		return
 	}
 
 	// Log message to console
-	log.Println("[RabbitMQ]: Received submission status update", dto.SubmissionUUID)
+	log.Println(
+		"[RabbitMQ]: Received submission status update",
+		dto.SubmissionUUID,
+	)
 
 	// Update submission status
 	err = queueMgr.UseCases.UpdateSubmissionStatus(dto)
 	if err != nil {
-		log.Println("[RabbitMQ]: Error updating submission status: " + err.Error())
 		return
 	}
 }
