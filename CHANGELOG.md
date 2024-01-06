@@ -1,3 +1,12 @@
+## [0.2.1](https://github.com/upb-code-labs/submissions-status-updater-microservice/compare/v0.2.0...v0.2.1) (2024-01-06)
+
+
+### Bug Fixes
+
+* Use an exchange instead of a queue to handle real time updates ([#9](https://github.com/upb-code-labs/submissions-status-updater-microservice/issues/9)) ([3334eb4](https://github.com/upb-code-labs/submissions-status-updater-microservice/commit/3334eb4d88d04dfa84315a69ac6681f147000399))
+
+
+
 # [0.2.0](https://github.com/upb-code-labs/submissions-status-updater-microservice/compare/v0.1.0...v0.2.0) (2024-01-06)
 
 
