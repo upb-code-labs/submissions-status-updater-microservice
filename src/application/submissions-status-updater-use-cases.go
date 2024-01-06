@@ -21,7 +21,7 @@ func (useCases *SubmissionsStatusUpdaterUseCases) UpdateSubmissionStatus(dto *dt
 	}
 
 	// Send submission status update to the submissions real time updates queue
-	err = useCases.SubmissionsRealTimeUpdatesQueue.EnqueueUpdate(dto)
+	err = useCases.SubmissionsRealTimeUpdatesQueue.SendUpdate(dto)
 	if err != nil {
 		log.Println("[SubmissionsStatusUpdaterUseCases] Error enqueuing submission status update: " + err.Error())
 		return err

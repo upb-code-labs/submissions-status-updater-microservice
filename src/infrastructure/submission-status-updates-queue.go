@@ -124,7 +124,7 @@ func (queueMgr *SubmissionStatusUpdatesQueueMgr) ListenForSubmissionStatusUpdate
 // processSubmissionStatusUpdates creates an infinite loop that processes submission status updates
 func (queueMgr *SubmissionStatusUpdatesQueueMgr) processSubmissionStatusUpdates() {
 	log.Println(
-		"[RabbitMQ Submissions Status Updates Queue]: Listening for submission status updates...",
+		"[RabbitMQ Submissions Status Updates Queue]: Listening for updates...",
 	)
 
 	// Process each message in a separate goroutine

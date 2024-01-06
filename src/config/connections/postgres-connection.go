@@ -21,11 +21,11 @@ func GetPostgresConnection() *sql.DB {
 
 		// Check connection
 		if err = db.Ping(); err != nil {
-			log.Fatal(err.Error())
+			log.Fatal("[Postgres]: Error connecting to the database: " + err.Error())
 		}
 
 		// Set connection
-		log.Println("Connected to Postgres")
+		log.Println("[Postgres]: Connected")
 		pgConnection = db
 	}
 
