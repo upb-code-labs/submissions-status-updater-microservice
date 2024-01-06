@@ -8,7 +8,8 @@ import (
 )
 
 type SubmissionsStatusUpdaterUseCases struct {
-	SubmissionsRepository definitions.SubmissionsRepository
+	SubmissionsRepository           definitions.SubmissionsRepository
+	SubmissionsRealTimeUpdatesQueue definitions.SubmissionsRealTimeUpdatesQueue
 }
 
 func (useCases *SubmissionsStatusUpdaterUseCases) UpdateSubmissionStatus(dto *dtos.SubmissionStatusUpdateDTO) error {
@@ -19,6 +20,12 @@ func (useCases *SubmissionsStatusUpdaterUseCases) UpdateSubmissionStatus(dto *dt
 		return err
 	}
 
-	// TODO: Send submission status update to the submissions real time updates queue
+	// Send submission status update to the submissions real time updates queue
+	err = useCases.SubmissionsRealTimeUpdatesQueue.EnqueueUpdate(dto)
+	if err != nil {
+		log.Println("[SubmissionsStatusUpdaterUseCases] Error enqueuing submission status update: " + err.Error())
+		return err
+	}
+
 	return nil
 }

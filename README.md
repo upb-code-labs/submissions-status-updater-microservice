@@ -8,9 +8,9 @@ Below is a diagram of the overall architecture of the system with the Submission
 
 ## Documentation
 
-Please, refer to the following documents for more information about the tests micro-service:
+Please, refer to the following documents for more information about the Submissions Status Updater micro-service:
 
-| Document                               | Description                                                                 |
-| -------------------------------------- | --------------------------------------------------------------------------- |
-| [Contributing](./docs/contributing.md) | Contributing guidelines.                                                    |
-| [Environment](./docs/environment.md)   | A description of the environment variables used by the tests micro-service. |
+| Document                               | Description                                                                                      |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| [Contributing](./docs/contributing.md) | Contributing guidelines.                                                                         |
+| [Environment](./docs/environment.md)   | A description of the environment variables used by the Submissions Status Updater micro-service. |
