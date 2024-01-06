@@ -4,5 +4,5 @@ import "github.com/upb-code-labs/submissions-status-updater-microservice/src/dom
 
 type SubmissionsRealTimeUpdatesQueue interface {
 	// Publishes a message to the queue
-	EnqueueUpdate(updateDTO *dtos.SubmissionStatusUpdateDTO) error
+	SendUpdate(updateDTO *dtos.SubmissionStatusUpdateDTO) error
 }
