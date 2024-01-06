@@ -26,7 +26,8 @@ func GetSubmissionStatusUpdatesQueueMgr() *SubmissionStatusUpdatesQueueMgr {
 		submissionStatusUpdatesQueueMgrInstance = &SubmissionStatusUpdatesQueueMgr{
 			Queue: getRabbitMQSubmissionsStatusUpdatesQueue(),
 			UseCases: &application.SubmissionsStatusUpdaterUseCases{
-				SubmissionsRepository: implementations.GetSubmissionsPgRepository(),
+				SubmissionsRepository:           implementations.GetSubmissionsPgRepository(),
+				SubmissionsRealTimeUpdatesQueue: implementations.GetSubmissionsRealTimeUpdatesQueueMgrInstance(),
 			},
 			// Channel is set when listening for submission status updates
 		}
@@ -156,10 +157,6 @@ func (queueMgr *SubmissionStatusUpdatesQueueMgr) processSubmissionStatusUpdate(m
 	// Update submission status
 	err = queueMgr.UseCases.UpdateSubmissionStatus(dto)
 	if err != nil {
-		log.Println(
-			"[RabbitMQ Submissions Status Updates Queue]: Error updating submission status: ",
-			err.Error(),
-		)
 		return
 	}
 }
