@@ -58,6 +58,7 @@ jobs:
       packages: write
     needs:
       - release
+      - version
     steps:
       - uses: actions/checkout@v3
 
@@ -79,6 +80,7 @@ jobs:
     runs-on: ubuntu-22.04
     needs:
       - docker
+      - version
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
         with:
